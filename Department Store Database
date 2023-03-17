@@ -1,0 +1,33 @@
+/* Create Store Database */
+CREATE TABLE project (UPC INTEGER PRIMARY KEY, name TEXT, style TEXT, department TEXT, price INTEGER);
+
+INSERT INTO project VALUES (001, "GGE Baseball Glove", "DKSGGE115","Diamond Sports", 120);
+INSERT INTO project VALUES (002, "Legend Tee", "Blue", "Men's Athletic Apparel", 35);
+Insert into project values (003, "Nike Air Max", "Red/White", "Men's Athletic Footwear", 100);
+Insert into project VALUES (004, "Gatorade Lemon Lime", "GXLLM", "Front End", 2);
+Insert into project VALUES (005, "kayak", "high speed", "paddle Sports", 250);
+insert into project values (006, "Prince tennis raqcuet", "lux", "racquet Sports", 40);
+insert into project values (007, "snorkles", "youth pink", "water Sports", 30);
+insert into project values (008, "bowling ball", "8lb orange swirl", "other Sports", 50);
+insert into project values (009, "tap shoes", "flat", "dance", 80);
+insert into project values (010, "Marucci CatX", "USSA -10", "Diamond Sports", 300);
+insert into project values (011, "River Run", "Inner Tube", "water Sports", 60);
+insert into project values (012, "pointe shoes", "bloch", "dance", 100);
+insert into project values (013, "M&Ms", "Peanut", "Front End", 4);
+insert into project values (014, "Tiro Pants", "Black/White", "Men's Athletic Apparel", 50);
+insert into project values (015, "Soccer Ball", "Women's World Cup", "Soccer", 160);
+
+/* Show items from lowest price to largest */
+SELECT * FROM project  order by price;
+
+/* What is the average price for a Men's Athletic Apparel item? */
+SELECT Avg(price) "Avg Men's Ath App price"
+FROM project
+WHERE department = 'Men's Athletic Apparel';
+
+/* What are all the sports related items? */
+SELECT * FROM project
+WHERE department LIKE "%Sports" 
+OR deparment = 'Soccer';
+
+
