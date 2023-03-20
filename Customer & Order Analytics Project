@@ -1,0 +1,60 @@
+/* Select the customer account numbers for all the orders that were placed in February. */
+SELECT BIT_DB.customers.acctnum
+FROM BIT_DB.FebSales 
+LEFT OUTER JOIN BIT_DB.customers
+ON BIT_DB.customers.order_id = BIT_DB.FebSales.orderID
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null;
+
+/* Which product was the cheapest one sold in January, and what was the price? */
+SELECT product, price FROM BIT_DB.JanSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+ORDER BY price
+LIMIT 1;
+
+/* What was the total revenue for each product sold in January?*/
+SELECT product, SUM(price) AS Total
+FROM BIT_DB.JanSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+group by product
+ORDER BY Total desc;
+
+/* Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue? */
+SELECT product, sum(quantity) AS Units, sum(price) AS SalesTotal
+FROM BIT_DB.FebSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+group by product
+ORDER BY SalesTotal;
+
+/* How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers? */
+SELECT BIT_DB.customers.acctnum, sum(quantity) AS TotalUnits, avg(BIT_DB.FebSales.price) AS AvgPrice
+FROM BIT_DB.customers
+LEFT OUTER JOIN BIT_DB.FebSales
+ON BIT_DB.customers.order_id = BIT_DB.FebSales.orderID
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+AND quantity >2
+group by BIT_DB.customers.acctnum;
+
+/* List all the products sold in Los Angeles in February, and include how many of each were sold. */
+SELECT product, sum(quantity) AS TotalUnits
+FROM BIT_DB.FebSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+AND location like "%Los Angeles%"
+GROUP BY product
