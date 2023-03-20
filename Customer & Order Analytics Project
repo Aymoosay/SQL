@@ -58,3 +58,55 @@ AND orderid <> ''
 AND orderid is not Null
 AND location like "%Los Angeles%"
 GROUP BY product
+
+/* Which locations in New York received at least 3 orders in January, and how many orders did they each receive? */
+SELECT location, count(location) AS Orders FROM BIT_DB.JanSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+GROUP BY location
+HAVING orders >2
+ORDER BY orders desc;
+
+/* How many of each type of headphone were sold in February? */
+SELECT Product AS Headphone, sum(quantity) AS Quantity
+FROM BIT_DB.FebSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+AND Product LIKE "%Headphone%"
+GROUP BY Product
+Order by Quantity desc;
+
+/* What was the average amount spent per account in February? (Hints: For this question, we want the average amount spent / number of accounts, not the amount spent by each account. To multiply, you can use the * symbol, and to divide, you can use the / symbol.) */
+SELECT avg(quantity*price) AS AvgAmountSpent
+FROM BIT_DB.FebSales feb
+LEFT OUTER JOIN BIT_DB.customers cus
+ON feb.orderID = cus.order_id
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null;
+
+/* What was the average quantity of products purchased per account in February? (Hint: just like question 3, we want the overall average, not the average for each account individually).*/
+SELECT sum(jan.quantity)/count(cus.acctnum)
+FROM BIT_DB.JanSales jan
+LEFT OUTER JOIN BIT_DB.customers cus
+ON cus.order_id = jan.orderID
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null;
+
+/* Which product brought in the most revenue in January and how much revenue did it bring in total? */
+SELECT product, sum(price*quantity)
+FROM BIT_DB.JanSales
+WHERE length(orderid) = 6
+AND orderid <> 'Order_ID'
+AND orderid <> ''
+AND orderid is not Null
+GROUP BY product
+ORDER BY sum(price*quantity) desc
+LIMIT 1;
